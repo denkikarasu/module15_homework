@@ -62,14 +62,8 @@ function printMsg(message, direction) {
   if(event) {event.preventDefault();}
   
   let printMsg = document.createElement("div");
-  let cssFloat = "";
-  printMsg.style.width = "100%";
-  if (direction === "out") {
-    cssFloat = "right";
-  } else if (direction === "in") {
-    cssFloat = "left";
-  }
-  printMsg.innerHTML = `<p class='message' style='display: block; float: ${cssFloat}'>${message}</p>`;
+  printMsg.className = `message ${direction}`;
+  printMsg.innerHTML = message;
   output.appendChild(printMsg);
 
   // Очистка формы
@@ -96,6 +90,7 @@ const success = (position) => {
 
 // В codepen.io:
 // https://codepen.io/denkikarasu/pen/rNeQpYJ
+
 // В codepen вылетает ошибка "Bad Path /boomboom/v2/index.html"
 // По рекомендациям из сети добавлено event.preventDefault();
 // Точки добавления инструкции и конкретный формат определены эмпирически (если добавить без проверки event, вылетает ошибка "Cannot read property 'preventDefault' of undefined" либо на отправке сообщения, либо на геолокации).
