@@ -16,9 +16,11 @@ window.onload = function () {
   websocket = new WebSocket(wsUri);
   websocket.onopen = function(evt) {
     console.log("CONNECTED");
+    btnSend.disabled = false;
   };
   websocket.onclose = function(evt) {
     console.log("DISCONNECTED");
+    btnSend.disabled = true;
   };
   websocket.onerror = function(evt) {
     printMsg(
