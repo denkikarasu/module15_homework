@@ -36,8 +36,11 @@ window.onload = function () {
     websocket.send(inputMsg);
     
     websocket.onmessage = function(evt) {
-      // Вывод входящего сообщения
-      printMsg(evt.data, "in");
+      // Вывод входящего сообщения (если не содержит геолокацию)
+      console.log(evt.data);
+      if(!evt.data.includes('Location')) {
+        printMsg(evt.data, "in");  
+      }
     };
   });
 
@@ -50,7 +53,6 @@ window.onload = function () {
       message = 'Geolocation не поддерживается вашим браузером';
       printMsg(message,"out");
     } else {
-      // console.log('Определение местоположения…');
       message = 'Определение местоположения…';
       printMsg(message, "out");
       navigator.geolocation.getCurrentPosition(success, error);
@@ -91,6 +93,7 @@ const success = (position) => {
   const longitude = position.coords.longitude;
   console.log('position', latitude, longitude);
   message = `<a href="https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=17/${latitude}/${longitude}" target="_blank">Геолокация</a>`;
+  websocket.send(`Location: ${latitude},${longitude}`);
   printMsg(message,"geo");
 };
 
