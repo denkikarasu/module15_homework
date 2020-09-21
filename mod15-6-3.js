@@ -71,9 +71,9 @@ function printMsg(message, direction) {
   }
   printMsg.innerHTML = `<p class='message' style='display: block; float: ${cssFloat}'>${message}</p>`;
   output.appendChild(printMsg);
-  const lineBreak = document.createElement("div");
-  lineBreak.className = "break";
-  output.appendChild(lineBreak);
+
+  // Очистка формы
+  document.querySelector('form').reset();
 }
 
 
@@ -100,6 +100,7 @@ const success = (position) => {
 // По рекомендациям из сети добавлено event.preventDefault();
 // Точки добавления инструкции и конкретный формат определены эмпирически (если добавить без проверки event, вылетает ошибка "Cannot read property 'preventDefault' of undefined" либо на отправке сообщения, либо на геолокации).
 
-// Не разобралась, как выводить сообщения, чтобы они шли сразу одно под другим, а не распределялись по вертикали.
+// Как ни странно, в браузере тоже без этих строк начинаются сбои (показанные сообщения сразу же исчезают), это объяснить не могу.
 
-// На карту добавила маркер для наглядности.
+
+// На карту добавлен  маркер, кнопка "Отправить" неактивна при отсутствии соединения, форма очищается после отправки сообщения.
