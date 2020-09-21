@@ -37,7 +37,7 @@ window.onload = function () {
     
     websocket.onmessage = function(evt) {
       // Вывод входящего сообщения (если не содержит геолокацию)
-      console.log(evt.data);
+      // console.log(evt.data);
       if(!evt.data.includes('Location')) {
         printMsg(evt.data, "in");  
       }
