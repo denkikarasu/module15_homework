@@ -48,8 +48,11 @@ window.onload = function () {
 
     if (!navigator.geolocation) {
       message = 'Geolocation не поддерживается вашим браузером';
+      printMsg(message,"out");
     } else {
-      console.log('Определение местоположения…');
+      // console.log('Определение местоположения…');
+      message = 'Определение местоположения…';
+      printMsg(message, "out");
       navigator.geolocation.getCurrentPosition(success, error);
     }
   });
@@ -61,6 +64,11 @@ function printMsg(message, direction) {
   // устранение бага codepen.io
   if(event) {event.preventDefault();}
   
+  if (direction === "geo") {
+    direction = "out";
+    output.removeChild(output.lastChild);
+  } 
+
   let printMsg = document.createElement("div");
   printMsg.className = `message ${direction}`;
   printMsg.innerHTML = message;
@@ -83,7 +91,7 @@ const success = (position) => {
   const longitude = position.coords.longitude;
   console.log('position', latitude, longitude);
   message = `<a href="https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=17/${latitude}/${longitude}" target="_blank">Геолокация</a>`;
-  printMsg(message,"out");
+  printMsg(message,"geo");
 };
 
 
@@ -99,3 +107,5 @@ const success = (position) => {
 
 
 // На карту добавлен  маркер, кнопка "Отправить" неактивна при отсутствии соединения, форма очищается после отправки сообщения.
+
+// Добавлено временное сообщение о процессе поиска геолокации.
