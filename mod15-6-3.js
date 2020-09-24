@@ -27,6 +27,13 @@ window.onload = function () {
       '<span style="color: red;">ERROR:</span> ' + evt.data, "out"
     );
   };
+  websocket.onmessage = function(evt) {
+    // Вывод входящего сообщения (если не содержит геолокацию)
+    // console.log(evt.data);
+    if(!evt.data.includes('Location')) {
+      printMsg(evt.data, "in");  
+    }
+  };
 
   // Обработчик кнопки "Отправить"
   btnSend.addEventListener('click', () => {
@@ -35,19 +42,13 @@ window.onload = function () {
     printMsg(inputMsg, "out");
     websocket.send(inputMsg);
     
-    websocket.onmessage = function(evt) {
-      // Вывод входящего сообщения (если не содержит геолокацию)
-      // console.log(evt.data);
-      if(!evt.data.includes('Location')) {
-        printMsg(evt.data, "in");  
-      }
-    };
+    
   });
 
   // Обработчик кнопки "Геолокация"
   btnGeo.addEventListener('click', () => {
     // устранение бага codepen.io
-    if(event) {event.preventDefault();}
+    // if(event) {event.preventDefault();}
 
     if (!navigator.geolocation) {
       message = 'Geolocation не поддерживается вашим браузером';
@@ -64,7 +65,7 @@ window.onload = function () {
 // Вывод сообщений в чате
 function printMsg(message, direction) {
   // устранение бага codepen.io
-  if(event) {event.preventDefault();}
+  // if(event) {event.preventDefault();}
   
   if (direction === "geo") {
     direction = "out";
@@ -112,3 +113,9 @@ const success = (position) => {
 // На карту добавлен  маркер, кнопка "Отправить" неактивна при отсутствии соединения, форма очищается после отправки сообщения.
 
 // Добавлено временное сообщение о процессе поиска геолокации.
+
+
+/*****/
+
+// Ошибка происходила из-за того, что у формы (элемент form) не был указан атрибут action, в котором обычно указывается ссылка на серверный скрипт, отвечающий за обработку формы. Если этот атрибут не указать, то попытка отправить форму (а клик на кнопку считается попыткой отправить форму) вызовет перезагрузку страницы. Т.е. сообщения не стирались, а просто перезагружалась вся страница. В html я добавила "заглушку" в атрибут action, это помогло решить проблему
+// Также исправила в JS коде небольшой недочёт - websocket.onmessage лучше определять на том же уровне, что и оставльные события websocket. В вашем варианте функция-обработчик заново переопределялась при каждом клике на кнопку, что не имеет смысла, т.к. функция всегда одна и та же и никак не зависит от события клика
